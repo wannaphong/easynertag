@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from typing import List
-from tqdm.auto import tqdm
 from nltk.tokenize import RegexpTokenizer
 import re
 
@@ -11,15 +10,18 @@ def white_space_split(text: str)->List[str]:
 
 class Engine:
     def __init__(self,word_tokenize=white_space_split,pos_tag=None) -> None:
+        """
+        word_tokenize: function for do word tokenize (default is white_space_split)
+        pos_tag: function for do part of speech tagging
+        """
         self.pattern = r'\[(.*?)\](.*?)\[\/(.*?)\]'
         self.tokenizer = RegexpTokenizer(self.pattern) # [TIME]8.00[/TIME] -> ('TIME','ไง','TIME')
         self.word_tokenize = word_tokenize
         self.pos_tag = pos_tag
 
-    # จัดการกับ tag ที่ไม่ได้ tag
-    def toolner_to_tag(self, text)->str:
+    def _toolner_to_tag(self, text:str)->str:
         text=re.sub("<[^>]*>","",text)
-        text=re.sub("(\[\/(.*?)\])","\\1***",text) # text.replace('>','>***') # ตัดการกับพวกไม่มี tag word
+        text=re.sub("(\[\/(.*?)\])","\\1***",text) # for processing non-tag
         text=re.sub("(\[\w+\])","***\\1",text)
         text2=[]
         for i in text.split('***'):
@@ -45,18 +47,18 @@ class Engine:
             return _text
         return '\n'.join(_text)
 
-    def text2conll2002(self, text:str,pos=True):
+    def text2conll2002(self, text:str,pos=False)->str:
         """
-        ใช้แปลงข้อความให้กลายเป็น conll2002
+        make the dataset
         """
-        text=self.toolner_to_tag(text)
+        text=self._toolner_to_tag(text)
         text=text.replace("''",'"')
         text=text.replace("’",'"').replace("‘",'"')#.replace('"',"")
         tag=self.tokenizer.tokenize(text)
         j=0
         conll2002=""
         for tagopen,text,tagclose in tag:
-            word_cut=self.word_tokenize(text) # ใช้ตัวตัดคำ newmm
+            word_cut=self.word_tokenize(text)
             i=0
             txt5=""
             while i<len(word_cut):
