@@ -64,7 +64,7 @@ for     O
 me.     O
 ```
 
-You can custome the `word_tokenize` and the `pos_tag` in the Engine class.
+You can custom the `word_tokenize` and the `pos_tag` in the Engine class.
 
 ```
 Engine(
