@@ -2,7 +2,7 @@
 
 > Easy tagging for annotate NER corpus
 
-This is tool for helping you to create named entity recognition corpus in conll2002 format. It wants just a tag like [BBCoode](https://en.wikipedia.org/wiki/BBCode).
+This is tool for helping you to create named entity recognition corpus in conll2002 format. It wants just a tag like [BBCode](https://en.wikipedia.org/wiki/BBCode).
 
 ## Install
 
